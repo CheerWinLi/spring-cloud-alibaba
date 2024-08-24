@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.alibaba.dubbo.consumer.config.RpcFeignConfiguration,\
+  com.alibaba.dubbo.consumer.config.RpcRegistryConfiguration,\

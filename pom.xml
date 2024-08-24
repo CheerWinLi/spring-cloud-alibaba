@@ -108,6 +108,8 @@
         <module>spring-cloud-alibaba-starters</module>
         <module>spring-cloud-alibaba-coverage</module>
         <module>spring-cloud-alibaba-tests</module>
+        <module>spring-cloud-alibaba-starters/spring-cloud-starter-rpc</module>
+        <module>spring-cloud-alibaba-tests/rpc-tests</module>
     </modules>
 
     <dependencyManagement>
