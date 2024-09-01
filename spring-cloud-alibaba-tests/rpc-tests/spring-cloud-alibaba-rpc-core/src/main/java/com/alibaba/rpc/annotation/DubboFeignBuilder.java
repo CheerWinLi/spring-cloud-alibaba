@@ -29,10 +29,6 @@ public class DubboFeignBuilder extends Feign.Builder {
     public DubboFeignBuilder() {
         this.defaultReference = ReflectionUtils.findField(DefaultReferenceClass.class, "field").getAnnotation(DubboReference.class);
     }
-
-    //ReferenceBeanBuilder
-//        .create(defaultReference, target.getClass().getClassLoader(), applicationContext)
-//            .setInterfaceClass(target.type()).build();
     @Override
     public <T> T target(Target<T> target) {
         AnnotationAttributes attributes = AnnotationUtils.getAnnotationAttributes(defaultReference, true);

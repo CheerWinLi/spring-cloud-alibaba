@@ -1,5 +1,6 @@
 package com.alibaba.dubbo.provider.listener;
 
+import com.alibaba.dubbo.provider.config.RpcDispatcherServlet;
 import com.alibaba.dubbo.provider.server.CaptureHttpServletResponseWrapper;
 import com.alibaba.dubbo.provider.server.CoyoteRequestBuilder;
 import com.alibaba.dubbo.provider.server.MockHttpServletRequestConverter;
@@ -60,33 +61,16 @@ import java.util.stream.Collectors;
 public class RpcNettyServerListener implements ApplicationListener<ApplicationReadyEvent> {
     private ExchangeServer server;
 
-    @Autowired
-    private WebApplicationContext webApplicationContext;
-
     @Value("${rpc.netty.port}")
     private String port;
 
     @Value("${rpc.netty.host}")
     private String host;
-
-    @Value("${spring.port}")
-    private Integer localPort;
-//    private RestTemplate restTemplate;
-
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    private DispatcherServlet dispatcherServlet;
+    private RpcDispatcherServlet dispatcherServlet;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-//        this.restTemplate = new RestTemplate();
-//        try {
-//            dispatcherServlet.init();
-//        } catch (ServletException e) {
-//            throw new RuntimeException(e);
-//        }
-        this.dispatcherServlet = webApplicationContext.getBean("dispatcherServlet", DispatcherServlet.class);
+        this.dispatcherServlet = new RpcDispatcherServlet();
         initLocalServer(host, Integer.parseInt(port));
     }
 
@@ -99,43 +83,20 @@ public class RpcNettyServerListener implements ApplicationListener<ApplicationRe
                 public CompletableFuture<Object> reply(ExchangeChannel channel, Object msg) {
                     System.out.println("接收到客户端请求");
                     HttpMetadata httpMetadata = (HttpMetadata) msg;
-                    String url = "/"+httpMetadata.getUrl();
-                    Connector connector = new Connector("HTTP/1.1");
-                    connector.setPort(port);
-                    connector.setDomain("localhost");
-                    connector.setAsyncTimeout(1);
-                    Request request = new Request(connector);
-                    Response response = new Response();
-                    HttpRequestFactory factory=new DefaultHttpRequestFactory();
-                    org.apache.coyote.Request coyoteRequest = CoyoteRequestBuilder.initializeCoyoteRequest(httpMetadata, url);
-                    coyoteRequest.setServerPort(port);
-                    org.apache.coyote.Response coyoteResponse = new org.apache.coyote.Response();
-                    coyoteRequest.setResponse(coyoteResponse);
-                    request.setCoyoteRequest(coyoteRequest);
-                    response.setRequest(request);
-                    response.setCoyoteResponse(coyoteResponse);
-                    request.setResponse(response);
-//                    HttpRequestFactory factory=new DefaultHttpRequestFactory();
-//                    try {
-//                        HttpRequest httpRequest = factory.newHttpRequest(httpMetadata.getMethod(), url);
-//                    } catch (MethodNotSupportedException e) {
-//                        throw new RuntimeException(e);
-//                    }
-
+                    String url = httpMetadata.getUrl();
+                    MockHttpServletRequest request = MockHttpServletRequestConverter.getMockHttpServletRequest(httpMetadata, url);
+                    MockHttpServletResponse response = new MockHttpServletResponse();
                     try {
                         dispatcherServlet.service(request, response);
-                    } catch (ServletException e) {
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
+                    } catch (ServletException | IOException e) {
                         throw new RuntimeException(e);
                     }
-//                    HttpRpcResponse httpRpcResponse = new HttpRpcResponse();
-//                    httpRpcResponse.setStatusCode(response.getStatus());
-//                    httpRpcResponse.setBody(response.getContentAsByteArray());
-//                    httpRpcResponse.setReasonPhrase(response.getErrorMessage());
-//                    httpRpcResponse.setHeaders(convertHeaders(response));
-//                    return CompletableFuture.completedFuture(httpRpcResponse);
-                    return null;
+                    HttpRpcResponse httpRpcResponse = new HttpRpcResponse();
+                    httpRpcResponse.setStatusCode(response.getStatus());
+                    httpRpcResponse.setBody(response.getContentAsByteArray());
+                    httpRpcResponse.setReasonPhrase(response.getErrorMessage());
+                    httpRpcResponse.setHeaders(convertHeaders(response));
+                    return CompletableFuture.completedFuture(httpRpcResponse);
                 }
             });
         } catch (RemotingException e) {
