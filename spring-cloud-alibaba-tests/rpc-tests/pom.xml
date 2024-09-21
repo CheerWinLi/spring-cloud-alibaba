@@ -12,7 +12,6 @@
     <packaging>pom</packaging>
     <name>RPC Tests</name>
     <modules>
-        <module>spring-cloud-alibaba-rpc-core</module>
         <module>spring-cloud-alibaba-rpc-consumer</module>
         <module>spring-cloud-alibaba-rpc-provider</module>
         <module>spring-cloud-alibaba-rpc-api</module>

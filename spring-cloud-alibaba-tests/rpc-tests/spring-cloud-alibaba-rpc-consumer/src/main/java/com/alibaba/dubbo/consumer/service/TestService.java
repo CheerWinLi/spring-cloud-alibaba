@@ -1,9 +1,7 @@
 package com.alibaba.dubbo.consumer.service;
 
 
-import com.alibaba.dubbo.consumer.api.FooService;
 import com.alibaba.dubbo.consumer.api.ProviderService;
-import com.alibaba.dubbo.consumer.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

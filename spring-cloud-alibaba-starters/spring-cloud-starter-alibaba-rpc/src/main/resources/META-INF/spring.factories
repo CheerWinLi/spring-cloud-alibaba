@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.alibaba.cloud.rpc.config.RpcRegistryConfiguration,\
+  com.alibaba.cloud.rpc.config.RpcFeignConfiguration
