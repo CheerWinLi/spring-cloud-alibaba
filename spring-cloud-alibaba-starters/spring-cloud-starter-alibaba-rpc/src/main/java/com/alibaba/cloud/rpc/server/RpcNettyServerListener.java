@@ -1,5 +1,27 @@
+/*
+ * Copyright 2013-2023 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.alibaba.cloud.rpc.server;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 import com.alibaba.cloud.rpc.metadata.HttpMetadata;
 import com.alibaba.cloud.rpc.metadata.HttpRpcResponse;
@@ -13,19 +35,13 @@ import org.apache.dubbo.remoting.exchange.ExchangeServer;
 import org.apache.dubbo.remoting.exchange.Exchangers;
 import org.apache.dubbo.remoting.exchange.support.ExchangeHandlerAdapter;
 import org.apache.dubbo.rpc.model.FrameworkModel;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * @author :Lictory
@@ -62,7 +78,8 @@ public class RpcNettyServerListener implements ApplicationListener<ApplicationRe
                     MockHttpServletResponse response = new MockHttpServletResponse();
                     try {
                         dispatcherServlet.service(request, response);
-                    } catch (ServletException | IOException e) {
+                    }
+                    catch (ServletException | IOException e) {
                         throw new RuntimeException(e);
                     }
                     HttpRpcResponse httpRpcResponse = new HttpRpcResponse();
@@ -72,7 +89,8 @@ public class RpcNettyServerListener implements ApplicationListener<ApplicationRe
                     httpRpcResponse.setHeaders(convertHeaders(response));
                     return CompletableFuture.completedFuture(httpRpcResponse);
                 }
-            });
+            }
+            );
         } catch (RemotingException e) {
             throw new RuntimeException(e);
         }

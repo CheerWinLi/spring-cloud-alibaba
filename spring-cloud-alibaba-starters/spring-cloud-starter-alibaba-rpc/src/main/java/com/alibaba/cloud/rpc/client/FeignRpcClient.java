@@ -1,4 +1,25 @@
+/*
+ * Copyright 2013-2023 the original author or authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.alibaba.cloud.rpc.client;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import com.alibaba.cloud.rpc.metadata.HttpMetadata;
 import com.alibaba.cloud.rpc.metadata.HttpRpcResponse;
@@ -8,21 +29,14 @@ import feign.Request;
 import feign.Response;
 import org.apache.dubbo.remoting.RemotingException;
 import org.apache.dubbo.remoting.exchange.ExchangeClient;
-import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
+import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 
 /**
  * @author :Lictory
  * @date : 2024/08/12
  */
-
-
 public class FeignRpcClient implements Client {
-
     private LoadBalancerClient loadBalancerClient;
     private ExchangeClient client;
 
@@ -32,7 +46,6 @@ public class FeignRpcClient implements Client {
 
     @Override
     public Response execute(Request request, Request.Options options) {
-
         String url = UrlResolver.resolveOriginalUrl(loadBalancerClient, request.url());
         this.client = UrlResolver.getClient(url);
         HttpMetadata httpMetadata = initHttpMetadata(
@@ -45,7 +58,8 @@ public class FeignRpcClient implements Client {
         try {
             CompletableFuture<Object> future = client.request(httpMetadata);
             httpRpcResponse = (HttpRpcResponse) future.get();
-        } catch (RemotingException | InterruptedException | ExecutionException e) {
+        }
+        catch (RemotingException | InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
         return Response.builder()
@@ -66,5 +80,3 @@ public class FeignRpcClient implements Client {
         return httpMetadata;
     }
 }
-
-
