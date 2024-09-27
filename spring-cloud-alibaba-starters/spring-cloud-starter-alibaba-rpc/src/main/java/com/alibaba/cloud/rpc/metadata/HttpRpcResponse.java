@@ -25,50 +25,51 @@ import java.util.Map;
  * @date : 2024/08/16
  */
 public class HttpRpcResponse implements Serializable {
-    private int statusCode;
-    private String reasonPhrase;
-    private Map<String, Collection<String>> headers;
-    private byte[] body;
-    public HttpRpcResponse(int statusCode, String reasonPhrase, Map<String, Collection<String>> headers, byte[] body) {
-        this.statusCode = statusCode;
-        this.reasonPhrase = reasonPhrase;
-        this.headers = headers;
-        this.body = body;
-    }
+	private int statusCode;
+	private String reasonPhrase;
+	private Map<String, Collection<String>> headers;
+	private byte[] body;
 
-    public HttpRpcResponse() {
-    }
+	public HttpRpcResponse(int statusCode, String reasonPhrase, Map<String, Collection<String>> headers, byte[] body) {
+		this.statusCode = statusCode;
+		this.reasonPhrase = reasonPhrase;
+		this.headers = headers;
+		this.body = body;
+	}
 
-    public int getStatusCode() {
-        return statusCode;
-    }
+	public HttpRpcResponse() {
+	}
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
-    }
+	public int getStatusCode() {
+		return statusCode;
+	}
 
-    public String getReasonPhrase() {
-        return reasonPhrase;
-    }
+	public void setStatusCode(int statusCode) {
+		this.statusCode = statusCode;
+	}
 
-    public void setReasonPhrase(String reasonPhrase) {
-        this.reasonPhrase = reasonPhrase;
-    }
+	public String getReasonPhrase() {
+		return reasonPhrase;
+	}
 
-    public Map<String, Collection<String>> getHeaders() {
-        return headers;
-    }
+	public void setReasonPhrase(String reasonPhrase) {
+		this.reasonPhrase = reasonPhrase;
+	}
 
-    public void setHeaders(Map<String, Collection<String>> headers) {
-        this.headers = headers;
-    }
+	public Map<String, Collection<String>> getHeaders() {
+		return headers;
+	}
 
-    public byte[] getBody() {
-        return body;
-    }
+	public void setHeaders(Map<String, Collection<String>> headers) {
+		this.headers = headers;
+	}
 
-    public void setBody(byte[] body) {
-        this.body = body;
-    }
+	public byte[] getBody() {
+		return body;
+	}
+
+	public void setBody(byte[] body) {
+		this.body = body;
+	}
 }
 

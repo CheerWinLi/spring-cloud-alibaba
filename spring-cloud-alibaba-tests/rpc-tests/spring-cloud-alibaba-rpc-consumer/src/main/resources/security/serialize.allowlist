@@ -18,5 +18,5 @@
 #
 
 org.apache.dubbo.common.serialize.hessian2
-com.alibaba.rpc.metadata.HttpMetadata
-com.alibaba.rpc.metadata.HttpRpcResponse
+com.alibaba.cloud.rpc.metadata.HttpMetadata
+com.alibaba.cloud.rpc.metadata.HttpRpcResponse

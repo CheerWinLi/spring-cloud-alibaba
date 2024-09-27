@@ -211,9 +211,15 @@
             <!--  dubbo Dependencies  -->
             <dependency>
                 <groupId>org.apache.dubbo</groupId>
-                <artifactId>dubbo</artifactId>
+                <artifactId>dubbo-remoting-netty4</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.dubbo</groupId>
+                <artifactId>dubbo-serialization-hessian2</artifactId>
+                <version>${dubbo.version}</version>
+            </dependency>
+
             <!-- Own dependencies  -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>

@@ -14,25 +14,37 @@
  * limitations under the License.
  */
 
-package com.alibaba.cloud.rpc.config;
+package com.alibaba.cloud.rpc;
 
-import com.alibaba.cloud.rpc.RpcProperties;
-import com.alibaba.cloud.rpc.client.FeignRpcClient;
+import com.alibaba.cloud.rpc.utils.UrlResolver;
 
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+
 
 /**
  * @author :Lictory
- * @date : 2024/08/11
+ * @date : 2024/09/27
  */
 
-@Configuration(proxyBeanMethods = false)
+@AutoConfiguration
 @ConditionalOnProperty(prefix = RpcProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
-public class RpcFeignConfiguration {
+@EnableConfigurationProperties(RpcProperties.class)
+public class RpcConfiguration {
 	@Bean
-	public feign.Client feignClient() {
-		return new FeignRpcClient();
+	@ConditionalOnMissingBean
+	public RpcProperties rpcProperties() {
+		return new RpcProperties();
 	}
+
+
+	@Bean
+	@ConditionalOnMissingBean
+	public UrlResolver initUrlResolver() {
+		return new UrlResolver();
+	}
+
 }

@@ -12,7 +12,7 @@
     <artifactId>spring-cloud-alibaba-rpc-provider</artifactId>
     <dependencies>
         <dependency>
-            <groupId>org.example</groupId>
+            <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-rpc</artifactId>
             <version>${revision}</version>
         </dependency>

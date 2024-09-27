@@ -16,8 +16,8 @@
 
 package com.alibaba.cloud.rpc.server;
 
-import com.alibaba.cloud.rpc.utils.SpringUtil;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
 /**
@@ -26,9 +26,9 @@ import org.springframework.web.servlet.DispatcherServlet;
  */
 
 public class RpcDispatcherServlet extends DispatcherServlet {
-    public RpcDispatcherServlet() {
-        super();
-        // 初始化mapping
-        onRefresh(SpringUtil.applicationContext);
-    }
+	public RpcDispatcherServlet(ApplicationContext applicationContext) {
+		super();
+		// initial mapping
+		onRefresh(applicationContext);
+	}
 }

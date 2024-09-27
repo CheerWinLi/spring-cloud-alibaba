@@ -21,11 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.cloud.nacos.registry.NacosRegistration;
+import com.alibaba.cloud.rpc.RpcProperties;
+import com.alibaba.cloud.rpc.server.RpcNettyServerListener;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
@@ -35,19 +38,24 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = "spring.rpc.enable", matchIfMissing = true)
+@ConditionalOnProperty(prefix = RpcProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class RpcRegistryConfiguration {
 
-    @Autowired
-    private NacosRegistration nacosRegistration;
+	@Autowired
+	private NacosRegistration nacosRegistration;
+	@Autowired
+	private RpcProperties rpcProperties;
 
-    @Value("${spring.rpc.netty.port}")
-    private Integer port;
+	@PostConstruct
+	public void init() {
+		Map<String, String> metadata = new HashMap<>();
+		metadata.put(RpcProperties.NETTY_PORT_PREFIX, String.valueOf(rpcProperties.getPort()));
+		nacosRegistration.getMetadata().putAll(metadata);
+	}
 
-    @PostConstruct
-    public void init() {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("spring.rpc.netty.port", String.valueOf(port));
-        nacosRegistration.getMetadata().putAll(metadata);
-    }
+	@Bean
+	@ConditionalOnMissingBean
+	public RpcNettyServerListener initRpcNettyServerListener() {
+		return new RpcNettyServerListener();
+	}
 }

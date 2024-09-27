@@ -7,11 +7,11 @@ spring:
     nacos:
       discovery:
         server-addr: 10.21.32.154:8848
-  rpc:
-    enable: true
-    netty:
-      host: 127.0.0.1
-      port: 20880
+    rpc:
+      enabled: true
+      netty:
+        host: 127.0.0.1
+        port: 20880
 
 server:
   port: 8081
