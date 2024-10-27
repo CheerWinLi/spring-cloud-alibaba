@@ -16,9 +16,15 @@
 
 package com.alibaba.dubbo.provider.controller;
 
-import com.alibaba.dubbo.consumer.api.ProviderService;
+import com.alibaba.api.ProviderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 
 /**
  * @author :Lictory
@@ -29,16 +35,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api")
 public class TestController {
 
-    @Autowired
-    private ProviderService providerService;
+	@Autowired
+	private ProviderService providerService;
 
-    @GetMapping("/get")
-    public String getTest() {
-        return providerService.hi();
-    }
+	@GetMapping("/get")
+	public String getTest() {
+		return providerService.hi();
+	}
 
-    @PostMapping("/post/{userId}")
-    public void postTest(@PathVariable("userId") Integer userId) {
-        providerService.post(userId);
-    }
+	@PostMapping("/post/{userId}")
+	public void postTest(@PathVariable("userId") Integer userId) {
+		providerService.post(userId);
+	}
 }

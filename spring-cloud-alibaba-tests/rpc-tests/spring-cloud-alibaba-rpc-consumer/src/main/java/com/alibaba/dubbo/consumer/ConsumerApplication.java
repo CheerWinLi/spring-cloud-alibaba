@@ -30,9 +30,9 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
-@ComponentScan(basePackages = {"com.alibaba.dubbo.consumer.api","com.alibaba.dubbo.consumer"})
+@ComponentScan(basePackages = {"com.alibaba.api"})
 public class ConsumerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(ConsumerApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ConsumerApplication.class, args);
+	}
 }
